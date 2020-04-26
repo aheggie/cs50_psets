@@ -70,7 +70,7 @@ bool vote(string name)
 {
     for (int i = 0; i < candidate_count; i++)
     {
-        if (strcomp(candidates[i].name, name) == 0)
+        if (strcmp(candidates[i].name, name) == 0)
         {
             candidates[i].votes += 1;
             return true;
@@ -83,7 +83,7 @@ bool vote(string name)
 void print_winner(void)
 {
     //by default since we haven't checked anyone else
-    candidate current_most_votes = 0;
+    int current_most_votes = 0;
     for (int i = 0; i < candidate_count; i++)
     {
         if (candidates[i].votes > current_most_votes)
