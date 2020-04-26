@@ -1,3 +1,4 @@
+//note: from file start until vote definition is code provided by the course
 #include <cs50.h>
 #include <stdio.h>
 #include <string.h>
@@ -60,20 +61,42 @@ int main(int argc, string argv[])
     }
 
     // Display winner of election
-    print_winner();
+    return print_winner();
 }
 
 // Update vote totals given a new vote
+//Note: from here onwards is my exercise code
 bool vote(string name)
 {
-    // TODO
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (strcomp(candidates[i].name, name) == 0)
+        {
+            candidates[i].votes += 1;
+            return true;
+        }
+    }
     return false;
 }
 
 // Print the winner (or winners) of the election
 void print_winner(void)
 {
-    // TODO
-    return;
+    //by default since we haven't checked anyone else
+    candidate current_most_votes = 0;
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (candidates[i].votes > current_most_votes)
+        {
+            current_most_votes = candidates[i].votes;
+        }
+    }
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (candidates[i].votes == current_most_votes)
+        {
+            printf("%s\n", candidates[i].name);
+        }
+    }
+    return 0;
 }
-
