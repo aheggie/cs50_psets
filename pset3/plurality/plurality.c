@@ -82,8 +82,9 @@ bool vote(string name)
 // Print the winner (or winners) of the election
 void print_winner(void)
 {
-    //by default since we haven't checked anyone else
+    //by default since we haven't checked anyone at all yet
     int current_most_votes = 0;
+    //this loop keeps a running track of the current highest vote count
     for (int i = 0; i < candidate_count; i++)
     {
         if (candidates[i].votes > current_most_votes)
@@ -91,6 +92,7 @@ void print_winner(void)
             current_most_votes = candidates[i].votes;
         }
     }
+    //if they meet the highest votes, print their name as a winner
     for (int i = 0; i < candidate_count; i++)
     {
         if (candidates[i].votes == current_most_votes)
