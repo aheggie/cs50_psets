@@ -38,7 +38,7 @@ void eliminate(int min);
 void print_state(void);
 bool name_valid(string name);
 void add_vote(int voter, int rank);
-// int get_candidate_index(string name);
+int get_candidate_index(string name);
 
 int main(int argc, string argv[])
 {
@@ -95,7 +95,7 @@ int main(int argc, string argv[])
     {
         // Calculate votes given remaining candidates
         tabulate();
-        print_state();
+        // print_state();
 
         // Check if election has been won
         bool won = print_winner();
@@ -108,8 +108,8 @@ int main(int argc, string argv[])
         int min = find_min();
         bool tie = is_tie(min);
 
-        printf("min: %i\n", min);
-        printf("tie: %s\n", tie ? "true" : "false");
+        // printf("min: %i\n", min);
+        // printf("tie: %s\n", tie ? "true" : "false");
 
         // If tie, everyone wins
         if (tie)
