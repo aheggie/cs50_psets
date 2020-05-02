@@ -41,8 +41,10 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
             image[h][w].rgbtRed = opposite_pixel.rgbtRed;
             image[h][w].rgbtGreen = opposite_pixel.rgbtGreen;
             image[h][w].rgbtBlue = opposite_pixel.rgbtBlue;
-            
+
             image[h][opposite_w].rgbtRed = pixel.rgbtRed;
+            image[h][opposite_w].rgbtGreen = pixel.rgbtGreen;
+            image[h][opposite_w].rgbtBlue = pixel.rgbtBlue;
 
         }
         printf("\n");
