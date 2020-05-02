@@ -200,32 +200,32 @@ void tabulate(void)
 
 void add_vote(int voter, int rank)
 {
-  //base case - all candidates have been eliminated
-  if (rank == 3)
-  {
-    return;
-  }
+    //base case - all candidates have been eliminated
+    if (rank == 3)
+    {
+        return;
+    }
 
-  int chosen_candidate_index = preferences[voter][rank];
-  if (candidates[chosen_candidate_index].eliminated)
-  {
-    add_vote(voter, rank + 1);
-    return;
-  }
-  else
-  {
-    candidates[chosen_candidate_index].votes += 1;
-    return;
-  }
+    int chosen_candidate_index = preferences[voter][rank];
+    if (candidates[chosen_candidate_index].eliminated)
+    {
+        add_vote(voter, rank + 1);
+        return;
+    }
+    else
+    {
+        candidates[chosen_candidate_index].votes += 1;
+        return;
+    }
 }
 
 int get_candidate_index(string name)
 {
     //see what this is
     candidate void_candidate = candidates[candidate_count];
-    for(int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
     {
-        if(strcmp(candidates[i].name, name) == 0)
+        if (strcmp(candidates[i].name, name) == 0)
         {
             return i;
         }
@@ -234,30 +234,43 @@ int get_candidate_index(string name)
 }
 
 // Print the winner of the election, if there is one
+// bool print_winner(void)
+// {
+//   candidate current_winner = candidates[0];
+//   bool any_ties_for_first = false;
+//   for (int i = 1; i < candidate_count; i++)
+//   {
+//     candidate new_contender = candidates[i];
+//     if (new_contender.votes == current_winner.votes)
+//     {
+//       any_ties_for_first = true;
+//     }
+//     else if (new_contender.votes > current_winner.votes)
+//     {
+//       current_winner = new_contender;
+//       any_ties_for_first = false;
+//     }
+//   }
+//   // TODO
+//   if (!any_ties_for_first)
+//   {
+//     printf("%s\n", current_winner.name);
+//     return true;
+//   }
+//   return false;
+// }
+
 bool print_winner(void)
 {
-  candidate current_winner = candidates[0];
-  bool any_ties_for_first = false;
-  for (int i = 1; i < candidate_count; i++)
-  {
-    candidate new_contender = candidates[i];
-    if (new_contender.votes == current_winner.votes)
+    for (int i = 0; i < candidate_count; i++)
     {
-      any_ties_for_first = true;
+        if (candidates[i].votes * 2 > voter_count)
+        {
+            printf("%s\n", candidates[i].name);
+            return true;
+        }
     }
-    else if (new_contender.votes > current_winner.votes)
-    {
-      current_winner = new_contender;
-      any_ties_for_first = false;
-    }
-  }
-  // TODO
-  if (!any_ties_for_first)
-  {
-    printf("%s", current_winner.name);
-    return true;
-  }
-  return false;
+    return false;
 }
 
 // Return the minimum number of votes any remaining candidate has
@@ -274,7 +287,7 @@ int find_min(void)
             int ith_candidates_votes = candidates[i].votes;
             if (ith_candidates_votes < current_min)
             {
-              current_min = ith_candidates_votes;
+                current_min = ith_candidates_votes;
             }
         }
     }
@@ -286,28 +299,28 @@ int find_min(void)
 // Return true if the election is tied between all candidates, false otherwise
 bool is_tie(int min)
 {
-  for (int i = 0; i < candidate_count; i++)
-  {
-    if (candidates[i].votes > min)
+    for (int i = 0; i < candidate_count; i++)
     {
-      return false;
+        if (candidates[i].votes > min)
+        {
+            return false;
+        }
     }
-  }
-  return true;
-  // TODO
-  // return false;
+    return true;
+    // TODO
+    // return false;
 }
 
 // Eliminate the candidate (or candidiates) in last place
 void eliminate(int min)
 {
-  for (int i = 0; i < candidate_count; i++)
-  {
-    if (candidates[i].votes == min)
+    for (int i = 0; i < candidate_count; i++)
     {
-      candidates[i].eliminated = true;
+        if (candidates[i].votes == min)
+        {
+            candidates[i].eliminated = true;
+        }
     }
-  }
-  // TODO
-  return;
+    // TODO
+    return;
 }
