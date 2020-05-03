@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "helpers.h"
 #include <math.h>
+#include <stdarg.h>
 
 // Convert image to grayscale
 void grayscale(int height, int width, RGBTRIPLE image[height][width])
@@ -22,9 +23,9 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
     return;
 }
 
-// void print_pixel(RGBTRIPLE pixel) {
-//     printf("(%i,%i,%i)", pixel.rgbtRed,pixel.rgbtGreen,pixel.rgbtBlue);
-// }
+void print_pixel(RGBTRIPLE pixel) {
+    printf("(%i,%i,%i)", pixel.rgbtRed,pixel.rgbtGreen,pixel.rgbtBlue);
+}
 
 BYTE max_255(int integer) {
     return integer > 255 ? 255 : integer;
@@ -85,8 +86,47 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
     return;
 }
 
+RGBTRIPLE average_colour(int arg_count,...) {
+
+   va_list pixels;
+   float redSum = 0.0;
+   float greenSum = 0.0;
+   float blueSum = 0.0;
+   RGBTRIPLE current_pixel, output_pixel;
+
+   /* initialize valist for num number of arguments */
+   va_start(pixels, arg_count);
+
+   /* access all the arguments assigned to valist */
+   for (int i = 0; i < arg_count; i++) {
+      current_pixel = va_arg(pixels, RGBTRIPLE);
+      redSum += current_pixel.rgbtRed;
+      greenSum += current_pixel.rgbtGreen;
+      blueSum += current_pixel.rgbtBlue;
+   }
+
+   /* clean memory reserved for valist */
+   va_end(pixels);
+
+   output_pixel.rgbtRed = max_255(round(redSum/arg_count));
+   output_pixel.rgbtGreen = max_255(round(greenSum/arg_count));
+   output_pixel.rgbtBlue = max_255(round(blueSum/arg_count));
+
+
+   return output_pixel;
+}
+
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
+    RGBTRIPLE pixel1, pixel2;
+    pixel1.rgbtRed = 100;
+    pixel1.rgbtGreen = 100;
+    pixel1.rgbtBlue = 100;
+    pixel2.rgbtRed = 200;
+    pixel2.rgbtGreen = 200;
+    pixel2.rgbtBlue = 200;
+    RGBTRIPLE printed_pixel = average_colour(3, pixel1, pixel2, pixel2);
+    print_pixel(printed_pixel);
     return;
 }
