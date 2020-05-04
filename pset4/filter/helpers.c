@@ -152,17 +152,17 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             //right wall
             else if (w == width -1)
             {
-                // blur_pixel = average_colour(9, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
+                blur_pixel = average_colour(6, image[h-1][w-1], image[h-1][w], image[h][w-1], image[h][w], image[h+1][w-1], image[h+1][w]);
             }
             //top wall
             else if (h == 0)
             {
-                // blur_pixel = average_colour(9, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
+                blur_pixel = average_colour(6, image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
             }
             //bottom wall
             else if (h == height - 1)
             {
-                // blur_pixel = average_colour(9, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
+                blur_pixel = average_colour(6, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1]);
             }
             else
             {
@@ -170,7 +170,7 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             }
             image[h][w] = blur_pixel;
         }
-        printf("\n");
+        if ((h+1) % 10 == 0) {printf("\n");} else {printf(" ");}
     }
     // printf("h: %i w: %i", height, width);
     return;
