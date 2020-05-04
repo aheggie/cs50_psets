@@ -88,17 +88,17 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 
 //learned variable arg functions from explanation here https://www.geeksforgeeks.org/variable-length-argument-c/
 RGBTRIPLE average_colour(int arg_count,...) {
-
-   va_list pixels;
-   float redSum = 0.0;
-   float greenSum = 0.0;
+    //this etc is from stdarg.h
+    va_list pixels;
+    float redSum = 0.0;
+    float greenSum = 0.0;
    float blueSum = 0.0;
    RGBTRIPLE current_pixel, output_pixel;
 
-   /* initialize valist for num number of arguments */
+   /* initialize pixels for number of arguments */
    va_start(pixels, arg_count);
 
-   /* access all the arguments assigned to valist */
+   /* access all the arguments assigned to pixels */
    for (int i = 0; i < arg_count; i++) {
       current_pixel = va_arg(pixels, RGBTRIPLE);
       redSum += current_pixel.rgbtRed;
@@ -106,7 +106,7 @@ RGBTRIPLE average_colour(int arg_count,...) {
       blueSum += current_pixel.rgbtBlue;
    }
 
-   /* clean memory reserved for valist */
+   /* clean memory reserved for pixels */
    va_end(pixels);
 
    output_pixel.rgbtRed = max_255(round(redSum/arg_count));
@@ -122,8 +122,8 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
 {
     for (int h = 0; h < height; h++) {
         printf("line %i", h+1);
-        for (int w = 0; w < width/2; w++) {
-            RGBTRIPLE blur_pixel;
+        for (int w = 0; w < width; w++) {
+            RGBTRIPLE blur_pixel = image[h][w];
             //top left corner
             if (h == 0 && w == 0)
             {
@@ -132,15 +132,35 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             //top right corner
             else if (h == 0 && w == width -1)
             {
-                // blur_pixel = average_colour(9, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
+                blur_pixel = average_colour(4, image[h][w-1], image[h][w], image[h+1][w-1], image[h+1][w]);
             }
             //bottom left corner
             else if (h == height - 1 && w ==0)
             {
-                // blur_pixel = average_colour(9, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
+                blur_pixel = average_colour(4, image[h-1][w], image[h-1][w+1], image[h][w], image[h][w+1]);
             }
             //bottom right corner
             else if (h == height - 1 && w == width -1)
+            {
+                blur_pixel = average_colour(4, image[h-1][w-1], image[h-1][w], image[h][w-1], image[h][w]);
+            }
+            //left wall
+            else if (w == 0)
+            {
+                blur_pixel = average_colour(6, image[h-1][w], image[h-1][w+1], image[h][w], image[h][w+1], image[h+1][w], image[h+1][w+1]);
+            }
+            //right wall
+            else if (w == width -1)
+            {
+                // blur_pixel = average_colour(9, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
+            }
+            //top wall
+            else if (h == 0)
+            {
+                // blur_pixel = average_colour(9, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
+            }
+            //bottom wall
+            else if (h == height - 1)
             {
                 // blur_pixel = average_colour(9, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
             }
@@ -148,6 +168,7 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             {
                 blur_pixel = average_colour(9, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
             }
+            image[h][w] = blur_pixel;
         }
         printf("\n");
     }
