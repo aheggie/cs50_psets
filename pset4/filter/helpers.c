@@ -86,6 +86,7 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 
 //learned variable arg functions from explanation here https://www.geeksforgeeks.org/variable-length-argument-c/
 RGBTRIPLE average_colour(int arg_count,...) {
+    printf("%i", arg_count);
     //this etc is from stdarg.h
     va_list pixels;
     float redSum = 0.0;
@@ -118,10 +119,13 @@ RGBTRIPLE average_colour(int arg_count,...) {
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
-    for (int h = 0; h < height; h++) {
+    RGBTRIPLE new_image[height][width];
+    for (int h = 0; h < height; h++)
+    {
         // printf("line %i", h+1);
-        for (int w = 0; w < width; w++) {
-            RGBTRIPLE blur_pixel = image[h][w];
+        for (int w = 0; w < width; w++)
+        {
+            RGBTRIPLE blur_pixel;
             //top left corner
             if (h == 0 && w == 0)
             {
@@ -166,9 +170,18 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             {
                 blur_pixel = average_colour(9, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
             }
-            image[h][w] = blur_pixel;
+            new_image[h][w] = blur_pixel;
         }
         // if ((h+1) % 10 == 0) {printf("\n");} else {printf(" ");}
+    }
+
+    for (int h_b = 0; h_b < height; h_b++)
+    {
+        // printf("line %i", h+1);
+        for (int w_b = 0; w_b < width; w_b++)
+        {
+            image[h_b][w_b] = new_image[h_b][w_b];
+        }
     }
     // printf("h: %i w: %i", height, width);
     return;
