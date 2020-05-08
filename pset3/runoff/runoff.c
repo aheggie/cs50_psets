@@ -139,33 +139,34 @@ int main(int argc, string argv[])
 void print_state(void)
 {
     printf("Voter Count: %i\n", voter_count);
-    for(int i = 0; i < voter_count; i++)
+    for (int i = 0; i < voter_count; i++)
     {
         printf("Voter: %i\n", i);
-        for(int j = 0; j < candidate_count; j++)
+        for (int j = 0; j < candidate_count; j++)
         {
             printf("Rank %i: %s\n", j, candidates[preferences[i][j]].name);
         }
     }
     printf("-----");
     printf("Candidate Count: %i\n", candidate_count);
-    for(int k = 0; k < candidate_count; k++)
+    for (int k = 0; k < candidate_count; k++)
     {
-        printf("Candidate %i\nName: %s\nVotes: %i\nEliminated%s\n-----\n", k, candidates[k].name, candidates[k].votes, candidates[k].eliminated ? "true" : "false");
+        printf("Candidate %i\nName: %s\nVotes: %i\nEliminated%s\n-----\n", k, candidates[k].name, candidates[k].votes,
+               candidates[k].eliminated ? "true" : "false");
     }
 }
 
 // Record preference if vote is valid
 bool vote(int voter, int rank, string name)
 {
-  if (name_valid(name))
-  {
-    preferences[voter][rank] = get_candidate_index(name);
-    return true;
-  }
+    if (name_valid(name))
+    {
+        preferences[voter][rank] = get_candidate_index(name);
+        return true;
+    }
 
-  // TODO
-  return false;
+    // TODO
+    return false;
 }
 
 
