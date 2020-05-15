@@ -174,29 +174,29 @@ bool vote(int voter, int rank, string name)
 //new
 bool name_valid(string name)
 {
-  for (int i = 0; i < candidate_count; i++)
-  {
-    //   printf("%i: %s\n", i, candidates[i].name);
-    if (strcmp(candidates[i].name, name) == 0)
+    for (int i = 0; i < candidate_count; i++)
     {
-      return true;
+        //   printf("%i: %s\n", i, candidates[i].name);
+        if (strcmp(candidates[i].name, name) == 0)
+        {
+            return true;
+        }
     }
-  }
-  //this triggers only if no candidate was found above with the name
-  return false;
+    //this triggers only if no candidate was found above with the name
+    return false;
 }
 
 // Tabulate votes for non-eliminated candidates
 void tabulate(void)
 {
-  for (int i = 0; i < voter_count; i++)
-  {
-    add_vote(i, 0);
-  }
+    for (int i = 0; i < voter_count; i++)
+    {
+        add_vote(i, 0);
+    }
 
 
-  // TODO
-  return;
+    // TODO
+    return;
 }
 
 void add_vote(int voter, int rank)
