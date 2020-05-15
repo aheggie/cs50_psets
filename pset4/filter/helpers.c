@@ -6,9 +6,11 @@
 // Convert image to grayscale
 void grayscale(int height, int width, RGBTRIPLE image[height][width])
 {
-    for (int h = 0; h < height; h++) {
+    for (int h = 0; h < height; h++)
+    {
         // printf("line %i", h+1);
-        for (int w = 0; w < width; w++) {
+        for (int w = 0; w < width; w++)
+        {
             RGBTRIPLE pixel = image[h][w];
             BYTE greyscale = round((pixel.rgbtGreen + pixel.rgbtRed + pixel.rgbtBlue) / 3.0);
             // printf("%x%x%x ", pixel.rgbtRed, pixel.rgbtGreen, pixel.rgbtBlue);
@@ -25,11 +27,13 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
 
 
 // Convert image to sepia
-BYTE max_255(int integer) {
+BYTE max_255(int integer)
+{
     return integer > 255 ? 255 : integer;
 }
 
-RGBTRIPLE sepia_pixel(RGBTRIPLE input_pixel) {
+RGBTRIPLE sepia_pixel(RGBTRIPLE input_pixel)
+{
     RGBTRIPLE output_pixel;
     float originalRed = input_pixel.rgbtRed;
     float originalGreen = input_pixel.rgbtGreen;
@@ -44,8 +48,10 @@ RGBTRIPLE sepia_pixel(RGBTRIPLE input_pixel) {
 // Convert image to sepia
 void sepia(int height, int width, RGBTRIPLE image[height][width])
 {
-    for (int h = 0; h < height; h++) {
-        for (int w = 0; w < width; w++) {
+    for (int h = 0; h < height; h++)
+    {
+        for (int w = 0; w < width; w++)
+        {
 
             RGBTRIPLE sepia = sepia_pixel(image[h][w]);
 
@@ -61,10 +67,12 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
 // Reflect image horizontally
 void reflect(int height, int width, RGBTRIPLE image[height][width])
 {
-    for (int h = 0; h < height; h++) {
+    for (int h = 0; h < height; h++)
+    {
         // printf("line %i", h+1);
-        for (int w = 0; w < width/2; w++) {
-            int opposite_w = width-1-w;
+        for (int w = 0; w < width / 2; w++)
+        {
+            int opposite_w = width - 1 - w;
 
             RGBTRIPLE pixel = image[h][w];
             RGBTRIPLE opposite_pixel = image[h][opposite_w];
@@ -85,35 +93,37 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 }
 
 //learned variable arg functions from explanation here https://www.geeksforgeeks.org/variable-length-argument-c/
-RGBTRIPLE average_colour(int arg_count,...) {
+RGBTRIPLE average_colour(int arg_count, ...)
+{
     printf("%i", arg_count);
     //this etc is from stdarg.h
     va_list pixels;
     float redSum = 0.0;
     float greenSum = 0.0;
-   float blueSum = 0.0;
-   RGBTRIPLE current_pixel, output_pixel;
+    float blueSum = 0.0;
+    RGBTRIPLE current_pixel, output_pixel;
 
-   /* initialize pixels for number of arguments */
-   va_start(pixels, arg_count);
+    /* initialize pixels for number of arguments */
+    va_start(pixels, arg_count);
 
-   /* access all the arguments assigned to pixels */
-   for (int i = 0; i < arg_count; i++) {
-      current_pixel = va_arg(pixels, RGBTRIPLE);
-      redSum += current_pixel.rgbtRed;
-      greenSum += current_pixel.rgbtGreen;
-      blueSum += current_pixel.rgbtBlue;
-   }
+    /* access all the arguments assigned to pixels */
+    for (int i = 0; i < arg_count; i++)
+    {
+        current_pixel = va_arg(pixels, RGBTRIPLE);
+        redSum += current_pixel.rgbtRed;
+        greenSum += current_pixel.rgbtGreen;
+        blueSum += current_pixel.rgbtBlue;
+    }
 
-   /* clean memory reserved for pixels */
-   va_end(pixels);
+    /* clean memory reserved for pixels */
+    va_end(pixels);
 
-   output_pixel.rgbtRed = max_255(round(redSum/arg_count));
-   output_pixel.rgbtGreen = max_255(round(greenSum/arg_count));
-   output_pixel.rgbtBlue = max_255(round(blueSum/arg_count));
+    output_pixel.rgbtRed = max_255(round(redSum / arg_count));
+    output_pixel.rgbtGreen = max_255(round(greenSum / arg_count));
+    output_pixel.rgbtBlue = max_255(round(blueSum / arg_count));
 
 
-   return output_pixel;
+    return output_pixel;
 }
 
 // Blur image
@@ -129,46 +139,52 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             //top left corner
             if (h == 0 && w == 0)
             {
-                blur_pixel = average_colour(4, image[h][w], image[h][w+1], image[h+1][w], image[h+1][w+1]);
+                blur_pixel = average_colour(4, image[h][w], image[h][w + 1], image[h + 1][w], image[h + 1][w + 1]);
             }
             //top right corner
-            else if (h == 0 && w == width -1)
+            else if (h == 0 && w == width - 1)
             {
-                blur_pixel = average_colour(4, image[h][w-1], image[h][w], image[h+1][w-1], image[h+1][w]);
+                blur_pixel = average_colour(4, image[h][w - 1], image[h][w], image[h + 1][w - 1], image[h + 1][w]);
             }
             //bottom left corner
-            else if (h == height - 1 && w ==0)
+            else if (h == height - 1 && w == 0)
             {
-                blur_pixel = average_colour(4, image[h-1][w], image[h-1][w+1], image[h][w], image[h][w+1]);
+                blur_pixel = average_colour(4, image[h - 1][w], image[h - 1][w + 1], image[h][w], image[h][w + 1]);
             }
             //bottom right corner
-            else if (h == height - 1 && w == width -1)
+            else if (h == height - 1 && w == width - 1)
             {
-                blur_pixel = average_colour(4, image[h-1][w-1], image[h-1][w], image[h][w-1], image[h][w]);
+                blur_pixel = average_colour(4, image[h - 1][w - 1], image[h - 1][w], image[h][w - 1], image[h][w]);
             }
             //left wall
             else if (w == 0)
             {
-                blur_pixel = average_colour(6, image[h-1][w], image[h-1][w+1], image[h][w], image[h][w+1], image[h+1][w], image[h+1][w+1]);
+                blur_pixel = average_colour(6, image[h - 1][w], image[h - 1][w + 1], image[h][w], image[h][w + 1], image[h + 1][w],
+                                            image[h + 1][w + 1]);
             }
             //right wall
-            else if (w == width -1)
+            else if (w == width - 1)
             {
-                blur_pixel = average_colour(6, image[h-1][w-1], image[h-1][w], image[h][w-1], image[h][w], image[h+1][w-1], image[h+1][w]);
+                blur_pixel = average_colour(6, image[h - 1][w - 1], image[h - 1][w], image[h][w - 1], image[h][w], image[h + 1][w - 1],
+                                            image[h + 1][w]);
             }
             //top wall
             else if (h == 0)
             {
-                blur_pixel = average_colour(6, image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
+                blur_pixel = average_colour(6, image[h][w - 1], image[h][w], image[h][w + 1], image[h + 1][w - 1], image[h + 1][w],
+                                            image[h + 1][w + 1]);
             }
             //bottom wall
             else if (h == height - 1)
             {
-                blur_pixel = average_colour(6, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1]);
+                blur_pixel = average_colour(6, image[h - 1][w - 1], image[h - 1][w], image[h - 1][w + 1], image[h][w - 1], image[h][w],
+                                            image[h][w + 1]);
             }
             else
             {
-                blur_pixel = average_colour(9, image[h-1][w-1], image[h-1][w], image[h-1][w+1], image[h][w-1], image[h][w], image[h][w+1], image[h+1][w-1], image[h+1][w], image[h+1][w+1]);
+                blur_pixel = average_colour(9, image[h - 1][w - 1], image[h - 1][w], image[h - 1][w + 1], image[h][w - 1], image[h][w],
+                                            image[h][w + 1], image[h + 1][w - 1], image[h + 1][w],
+                                            image[h + 1][w + 1]);
             }
             new_image[h][w] = blur_pixel;
         }
